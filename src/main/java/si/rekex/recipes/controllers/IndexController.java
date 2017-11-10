@@ -1,18 +1,12 @@
 package si.rekex.recipes.controllers;
 
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import si.rekex.recipes.domain.Category;
-import si.rekex.recipes.domain.UnitOfMeasure;
-import si.rekex.recipes.repositories.CategoryRepository;
-import si.rekex.recipes.repositories.UnitOfMeasureRepository;
 import si.rekex.recipes.services.RecipeService;
 
-import java.util.Optional;
-import java.util.logging.Logger;
-
+@Slf4j
 @Controller
 public class IndexController {
 
@@ -24,7 +18,7 @@ public class IndexController {
 
     @GetMapping({"", "/", "/index"})
     public String getIndexPage(Model model) {
-
+        log.debug("Called getIndexPage in controller.");
         model.addAttribute("recipes", recipeService.getRecipes());
         return "index";
     }
