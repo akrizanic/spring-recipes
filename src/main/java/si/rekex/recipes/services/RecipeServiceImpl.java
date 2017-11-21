@@ -36,13 +36,10 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     public Recipe findById(Long id) {
-
         Optional<Recipe> recipeOptional = recipeRepository.findById(id);
-
         if(!recipeOptional.isPresent()) {
             throw new RuntimeException("Recipe not found");
         }
-
         return recipeOptional.get();
     }
 
@@ -54,5 +51,16 @@ public class RecipeServiceImpl implements RecipeService {
         Recipe savedRecipe = recipeRepository.save(detachedRecipe);
         log.debug("Saved recipe with id: " + savedRecipe.getId());
         return recipeToRecipeCommand.convert(savedRecipe);
+    }
+
+    @Override
+    @Transactional
+    public RecipeCommand findCommandById(Long id) {
+        return recipeToRecipeCommand.convert(findById(id));
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        recipeRepository.deleteById(id);
     }
 }
