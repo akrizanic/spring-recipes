@@ -8,6 +8,7 @@ import si.rekex.recipes.commands.RecipeCommand;
 import si.rekex.recipes.converters.RecipeCommandToRecipe;
 import si.rekex.recipes.converters.RecipeToRecipeCommand;
 import si.rekex.recipes.domain.Recipe;
+import si.rekex.recipes.exceptions.NotFoundException;
 import si.rekex.recipes.repositories.RecipeRepository;
 
 import java.util.HashSet;
@@ -49,6 +50,13 @@ public class RecipeServiceImplTest {
         assertNotNull("Null recipe returned", recipeReturned);
         verify(recipeRepository, times(1)).findById(anyLong());
         verify(recipeRepository, never()).findAll();
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void getRecipeByIdTestNotFound() throws Exception {
+        Optional<Recipe> recipeOptional = Optional.empty();
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+        Recipe recipeReturned = recipeService.findById(1L);
     }
 
     @Test
